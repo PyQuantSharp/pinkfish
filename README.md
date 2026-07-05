@@ -132,6 +132,7 @@ Quick links:
 - [buy-and-hold](examples/basics/buy-and-hold/strategy.ipynb) — minimal strategy
 - [buy-open-sell-close](examples/basics/buy-open-sell-close/strategy.ipynb) — buy at the open, sell at the close on the same day
 - [double-7s](examples/strategies/double-7s/strategy.ipynb) — Connors/Alvarez mean-reversion strategy on ETFs; includes a [daily signals script](examples/strategies/double-7s/signals.py) with optional Pushover and email notifications
+- [ac-countertrend](examples/strategies/ac-countertrend/strategy.ipynb) — buy pullbacks in a bull market (40/80 EMA filter); includes `optimize.ipynb`
 - [golden-cross](examples/strategies/golden-cross/strategy.ipynb) — classic moving-average crossover
 - [asset-allocation-portfolio](examples/portfolios/asset-allocation-portfolio/strategy.ipynb) — multi-ETF portfolio with monthly rebalance
 - [spreadsheet](examples/tutorials/spreadsheet/spreadsheet.ipynb) — trading signal sheet in Jupyter

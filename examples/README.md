@@ -76,6 +76,7 @@ Single-symbol rules. Most folders have `strategy.py` plus `strategy.ipynb`; seve
 | [golden-cross](strategies/golden-cross/strategy.ipynb) | `strategy.ipynb` | 50/200-day moving-average crossover |
 | [sell-in-may](strategies/sell-in-may/strategy.ipynb) | `strategy.ipynb` | Seasonal calendar rule |
 | [double-7s](strategies/double-7s/strategy.ipynb) | `strategy.ipynb` | Connors/Alvarez mean reversion; [daily signals](strategies/double-7s/README.md) |
+| [ac-countertrend](strategies/ac-countertrend/strategy.ipynb) | `strategy.ipynb` | AC countertrend pullback in bull markets; `optimize.ipynb` |
 | [sma-percent-band](strategies/sma-percent-band/strategy.ipynb) | `strategy.ipynb` | SMA envelope breakout |
 | [monthly-sma](strategies/monthly-sma/strategy.ipynb) | `strategy.ipynb` | Monthly timing filter |
 | [percent-allocate](strategies/percent-allocate/strategy.ipynb) | `strategy.ipynb` | Target percent allocation |
@@ -118,6 +119,7 @@ Short list if you do not want the full path:
 - **Minimal** → [basics/buy-and-hold](basics/buy-and-hold/strategy.ipynb)
 - **Open/close fills** → [basics/buy-open-sell-close](basics/buy-open-sell-close/strategy.ipynb)
 - **Connors mean reversion** → [strategies/double-7s](strategies/double-7s/strategy.ipynb)
+- **AC countertrend** → [strategies/ac-countertrend](strategies/ac-countertrend/strategy.ipynb)
 - **Golden cross** → [strategies/golden-cross](strategies/golden-cross/strategy.ipynb)
 - **Spreadsheet signals** → [tutorials/spreadsheet](tutorials/spreadsheet/spreadsheet.ipynb)
 - **ETF portfolio** → [portfolios/asset-allocation-portfolio](portfolios/asset-allocation-portfolio/strategy.ipynb)
