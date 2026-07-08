@@ -1,5 +1,6 @@
 from .fetch import (
     fetch_timeseries,
+    fetch_fxmacrodata_timeseries,
     select_tradeperiod,
     finalize_timeseries,
     remove_cache_symbols,
