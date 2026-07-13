@@ -8,6 +8,7 @@ import sys
 import warnings
 
 import pandas as pd
+import requests
 import yfinance as yf
 
 from pinkfish.pfstatistics import (
@@ -21,6 +22,8 @@ import pinkfish.utility as utility
 
 ########################################################################
 # TIMESERIES (fetch, select, finalize)
+
+FXMACRODATA_API_ROOT = 'https://fxmacrodata.com/api/v1'
 
 def _get_cache_dir(dir_name):
     """
@@ -70,6 +73,68 @@ def _adj_column_names(ts):
     """
     ts.columns = [col.lower().replace(' ','_') for col in ts.columns]
     ts.index.names = ['date']
+    return ts
+
+
+def _split_fx_pair(pair):
+    pair = pair.upper().replace('/', '').replace('-', '').replace('_', '')
+    if len(pair) != 6:
+        raise ValueError("FX pair must be formatted like 'EURUSD' or 'EUR/USD'")
+    return pair[:3], pair[3:]
+
+
+def fetch_fxmacrodata_timeseries(pair, start, end, api_key=None,
+                                 api_root=FXMACRODATA_API_ROOT,
+                                 dir_name='fxmacrodata-cache',
+                                 use_cache=True):
+    """
+    Read daily FX reference rates from FXMacroData.
+
+    FXMacroData returns one official reference value per date. Pinkfish expects
+    OHLCV-style bars, so the reference value is copied into open, high, low,
+    close, and adj_close with zero volume.
+    """
+    base, quote = _split_fx_pair(pair)
+    symbol = base + quote
+    timeseries_cache = _get_cache_dir(dir_name) / f'{symbol}.csv'
+
+    if not (timeseries_cache.is_file() and use_cache):
+        params = {
+            'start_date': start,
+            'end_date': end,
+            'limit': 5000,
+        }
+        if api_key:
+            params['api_key'] = api_key
+
+        url = f"{api_root.rstrip('/')}/forex/{base}/{quote}"
+        response = requests.get(url, params=params, timeout=30)
+        response.raise_for_status()
+        rows = response.json().get('data', [])
+
+        records = []
+        for row in rows:
+            value = float(row['val'])
+            records.append({
+                'Date': row['date'],
+                'Open': value,
+                'High': value,
+                'Low': value,
+                'Close': value,
+                'Adj Close': value,
+                'Volume': 0.0,
+            })
+
+        ts = pd.DataFrame.from_records(records)
+        if ts.empty:
+            print(f'No FXMacroData data for {base}/{quote}')
+            return None
+        ts = ts.sort_values('Date')
+        ts.to_csv(timeseries_cache, index=False, encoding='utf-8')
+
+    ts = pd.read_csv(timeseries_cache, index_col='Date', parse_dates=True)
+    ts = _adj_column_names(ts)
+    ts = ts[~ts.index.duplicated(keep='first')]
     return ts
 
 
